@@ -1,8 +1,34 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Body from "./components/Body"
+import Browse from "./components/Browse"
+import Error from "./components/Error"
+import Login from "./components/Login"
+
+const router = createBrowserRouter([
+  {
+    path:"/",
+    element:<Body/>,
+    children:[
+      {
+        path:"/browse",
+        element:<Browse/>,
+        errorElement:<Error/>
+      },
+      {
+        path:"/login",
+        element:<Login/>,
+        errorElement:<Error/>
+      }
+    ]
+  },
+  
+  
+])
 
 function App() {
   return (
     <>
-     <h1 className="text-3xl font-bold">gpt-flix</h1>
+     <RouterProvider router={router}></RouterProvider>
     </>
   )
 }

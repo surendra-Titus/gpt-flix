@@ -9,6 +9,6 @@
     - @import "tailwindcss" in index.css file
 - Create new git repo
 - Push code to git repo 
-    - git remote add origin https://github.com/surendra-Titus/gpt-flix.git
-    - git branch -M main
-    - git push -u origin main
+- Setup routing npm i -D react-router-dom
+TODO - routing
+     - sign in and sign up form
