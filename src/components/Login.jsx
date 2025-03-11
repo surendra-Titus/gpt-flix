@@ -1,9 +1,19 @@
 import { useRef, useState } from "react";
 import { validateSignInData } from "../utils/ValidationUtils";
 import { LOGIN_BG_IMG } from "../utils/constants";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
+
   const userName = useRef(null);
   const password = useRef(null);
   const email = useRef(null);
@@ -13,6 +23,44 @@ const Login = () => {
       password.current.value
     );
     setErrorMessage(validationRes);
+    if (validationRes) return;
+
+    if (!isSignUp) {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          console.log(userCredential);
+        })
+        .catch((error) => {
+          console.log(error);
+          setErrorMessage(error.message);
+        });
+    } else {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          console.log(userCredential.user);
+          updateProfile(auth.currentUser, {
+            displayName: userName.current.value,
+          })
+            .then(() => {
+              const { uid, displayName, email } = auth.currentUser;
+              dispatch(addUser({ uid, displayName, email }));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
   return (
     <div
@@ -74,18 +122,25 @@ const Login = () => {
             type="button"
             onClick={handleSignInClick}
           >
-            Sign In
+            {isSignUp ? "Sign Up" : "Sign In"}
           </button>
-          <span className="inline-block align-baseline font-bold text-sm text-blue-500 pl-6">
-            New to GPT-Flix?
-          </span>
-          <a
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 "
-            href="#"
-            onClick={() => setIsSignUp(!isSignUp)}
-          >
-            Sign up now.
-          </a>
+
+          <div className="w-40 inline-block align-baseline font-bold text-sm text-blue-500 pl-10">
+            {isSignUp ? (
+              <>
+                <span> Existing user? </span>
+              </>
+            ) : (
+              <span> New to GPT-Flix? </span>
+            )}
+            <a
+              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 "
+              href="#"
+              onClick={() => setIsSignUp(!isSignUp)}
+            >
+              {isSignUp ? "Sign In." : "Sign up now."}
+            </a>
+          </div>
         </div>
       </form>
     </div>
