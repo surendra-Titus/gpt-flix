@@ -1,8 +1,15 @@
+import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
+import Billboard from "./Billboard";
+import MovieGrid from "./MovieGrid";
 
 const Browse = () => {
+  useNowPlayingMovies();
   return (
-    <div>Browse</div>
-  )
-}
+    <>
+      <Billboard />
+      <MovieGrid />
+    </>
+  );
+};
 
-export default Browse
+export default Browse;

@@ -20,8 +20,12 @@ const Header = () => {
       <span>GPT-Flix</span>
       {user && (
         <div className="flex">
-          <div className="w-10 h-10 rounded-full bg-white text-black text-center p-2 m-3 font-extrabold size-0.5">
-            <span>{user.displayName ? user.displayName[0] : ""}</span>
+          <div className="flex items-center w-10 h-10 rounded-full bg-white text-black text-center p-2 m-3 font-extrabold size-0.5">
+            <span className="text-lg text-center">
+              {user.displayName
+                ? user.displayName.slice(0, 2).toUpperCase()
+                : ""}
+            </span>
           </div>
           <button onClick={handleSignOut} className="flex pt-5 cursor-pointer">
             Sign Out

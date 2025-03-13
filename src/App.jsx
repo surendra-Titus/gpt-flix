@@ -34,7 +34,7 @@ function App() {
   ]);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, displayName, email } = user;
         dispatch(addUser({ uid, displayName, email }));
@@ -44,6 +44,8 @@ function App() {
         router.navigate("/");
       }
     });
+
+    return () => unsubscribe();
   }, []);
 
   return (

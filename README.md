@@ -24,3 +24,16 @@
 - Redux
     - npm i -d @reduxjs/toolkit
     - npm i react-redux
+- TMDB
+    - create constant options
+    - create custom hook useNowPlayingMovies
+        - fetch data from TMDB
+        - create moviesSlice and store.
+        - push fetched movies data into movies store
+        - refracted now playing movies logic to a custom hook.
+- UI components 
+    |- Billboard
+    |- BillboardBackgroundTrailer
+    |- BillboardActions
+    |- MovieGrid
+    |- MovieCard
